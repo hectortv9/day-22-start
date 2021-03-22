@@ -25,6 +25,8 @@ class Ball(Turtle):
         if ball_color is None:
             ball_color = ScreenBox().complementary_color
         self.ball_color = ball_color
+        self.x_center = x
+        self.y_center = y
         self.color(ball_color)
         self.penup()
         self.speed(0)
@@ -101,7 +103,7 @@ class Ball(Turtle):
 
     def reset_ball(self):
         self.color(self.ball_color)
-        self.setposition(0, 0)
+        self.setposition(self.x_center, self.y_center)
 
     def change_color(self):
         # self.color(random.choice(COLORS))
@@ -120,12 +122,14 @@ class CourtGrid:
         self.right_bound = self.boundaries[RIGHT]
         self.down_bound = self.boundaries[DOWN]
 
+        self.horizontal_gap_count = int(abs(self.right_bound - self.left_bound) / gap_size)
+        self.vertical_gap_count = int(abs(self.up_bound - self.down_bound) / gap_size)
         self.lowest_gap = (int(self.left_bound + gap_size / 2), int(self.down_bound + gap_size / 2))
-        self.horizontal_gap_count = int((abs(self.left_bound) + abs(self.right_bound)) / gap_size)
-        self.vertical_gap_count = int((abs(self.up_bound) + abs(self.down_bound)) / gap_size)
+        self.center_gap = (int(self.horizontal_gap_count / 2) * gap_size + self.lowest_gap[X],
+                           int(self.vertical_gap_count / 2) * gap_size + self.lowest_gap[Y])
+        # center_gap will lean towards +x, +y when gaps are even, it will get perfectly centered when they are odd
 
-        # self.food = Food(*self.get_random_coordinate())
-        self.ball = Ball(0, 0, ball_color)
+        self.ball = Ball(self.center_gap[X], self.center_gap[Y], ball_color)
         self.bouncing_distance = gap_size * 0.55  # distance at which ball can be considered to bounce against
 
     def get_nth_gap_x(self, gap_number, from_left_to_right=True):
@@ -133,6 +137,17 @@ class CourtGrid:
             return (gap_number - 1) * self.gap_size + self.lowest_gap[X]
         else:
             return (self.horizontal_gap_count - gap_number) * self.gap_size + self.lowest_gap[X]
+
+    def get_centered_y(self, shape_height):
+        grid_height = self.vertical_gap_count * self.gap_size
+        if shape_height > grid_height:
+            raise Exception(f"ERROR: INSUFFICIENT SPACE. COURT HEIGHT={grid_height}, SHAPE HEIGHT={grid_height}")
+        shape_vertical_gap_count = int(shape_height / self.gap_size)
+        if shape_vertical_gap_count % 2 == 0:  # if the vertical gap count is odd
+            y = self.center_gap[Y] - int(self.gap_size / 2)
+        else:
+            y = self.center_gap[Y]
+        return y
 
     def get_visual_help(self):
         self.draw_grid()

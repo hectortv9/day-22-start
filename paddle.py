@@ -13,22 +13,23 @@ def set_default_paddle_color(color=paddle_color):
 
 class Paddle(Turtle):
 
-    def __init__(self, x, up_bound, down_bound, color=None):
+    def __init__(self, paddle_height_stretch, is_left_paddle, nth_gap_from_border, court, color=None):
         super().__init__(shape="square", visible=False)
-        self.stretch_wid = 5
+        self.stretch_wid = paddle_height_stretch
         self.paddle_width = PADDLE_WIDTH
         self.paddle_height = self.paddle_width * self.stretch_wid
-        self.x_center = x
+        self.x_center = court.get_nth_gap_x(nth_gap_from_border, is_left_paddle)
         self.x_left = self.x_center - int(self.paddle_width / 2)
         self.x_right = self.x_center + int(self.paddle_width / 2)
-        self.y_max = up_bound - int(self.paddle_height / 2)
-        self.y_min = down_bound + int(self.paddle_height / 2)
+        self.y_center = court.get_centered_y(self.paddle_height)
+        self.y_max = court.up_bound - int(self.paddle_height / 2)
+        self.y_min = court.down_bound + int(self.paddle_height / 2)
         color = paddle_color if color is None else color
         self.penup()
         self.speed(0)
         self.shapesize(stretch_wid=self.stretch_wid, stretch_len=1)
         self.color(color)
-        self.setposition(x, 0)
+        self.setposition(self.x_center, self.y_center)
         self.showturtle()
 
     def get_top_ycord(self):
