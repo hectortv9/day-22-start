@@ -21,10 +21,10 @@ class Game:
         self.screen = self.screen_box.screen
         self.scoreboard = scoreboard.Scoreboard(self.screen_box.up_bound, self.screen_box.complementary_color)
         self.court = court.CourtGrid(self.scoreboard, paddle.PADDLE_WIDTH)
-        self.left_paddle = Paddle(28, True, 1, self.court, self.screen_box.complementary_color)
+        self.left_paddle = Paddle(5, True, 1, self.court, self.screen_box.complementary_color)
         self.right_paddle = Paddle(5, False, 1, self.court, self.screen_box.complementary_color)
         self.initialize_game()
-        self.get_visual_help()
+        # self.get_visual_help()
 
     def start_listening(self):
         self.screen.onkeypress(self.right_paddle.up, UP)
