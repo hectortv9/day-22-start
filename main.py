@@ -1,4 +1,3 @@
-from screen_box import ScreenBox
 from game import Game
 
 # Press Shift+F10 to execute it or replace it with your code.

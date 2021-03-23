@@ -13,6 +13,7 @@ DELAY_AFTER_SCORE = 1
 SCREEN_TITLE = "Pong"
 MAX_SCORE = 10
 
+
 class Game:
 
     def __init__(self):
