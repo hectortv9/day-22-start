@@ -14,9 +14,11 @@ FILL_GAP_SHAPE = "circle"
 
 class CourtGrid:
 
-    def __init__(self, scoreboard, gap_size, ball_color=None):
+    def __init__(self, scoreboard, gap_size):
         self.gap_size = gap_size
         self.scoreboard = scoreboard
+
+        self.bouncing_distance = gap_size * 0.55  # distance at which ball can be considered to bounce against
 
         self.boundaries = self.get_grid_bounds()
         self.up_bound = self.boundaries[UP]
@@ -30,9 +32,6 @@ class CourtGrid:
         self.center_gap = (int(self.horizontal_gap_count / 2) * gap_size + self.lowest_gap[X],
                            int(self.vertical_gap_count / 2) * gap_size + self.lowest_gap[Y])
         # center_gap will lean towards +x, +y when gaps are even, it will get perfectly centered when they are odd
-
-        self.ball = Ball(self.center_gap[X], self.center_gap[Y], ball_color)
-        self.bouncing_distance = gap_size * 0.55  # distance at which ball can be considered to bounce against
 
     def get_nth_gap_x(self, gap_number, from_left_to_right=True):
         if from_left_to_right:
