@@ -4,7 +4,7 @@ import paddle
 import time
 import court
 import scoreboard
-import turtle
+import ball
 
 UP, DOWN, LEFT, RIGHT = "Up", "Down", "Left", "Right"  # Key names
 INITIAL_DELAY = 0.2
@@ -68,7 +68,7 @@ class Game:
                 bottom_y = interactions["paddle_in_turn"].get_bottom_ycord()
                 self.court.ball.miss_hit_animation(self.court, top_y, bottom_y, delay, DELAY_AFTER_SCORE)
                 delay = INITIAL_DELAY
-                self.scoreboard.increase_score(court.x_direction < 0)
+                self.scoreboard.increase_score(ball.x_direction < 0)
                 if self.scoreboard.score_left >= MAX_SCORE or self.scoreboard.score_right >= MAX_SCORE:
                     self.stop_listening()
                     self.scoreboard.print_game_over()
